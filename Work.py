@@ -1,15 +1,12 @@
 import cv2
 
 img_file = "img1.jpg"
-
-img = cv2.imread(img_file)
-
+img = cv2.imread("/Users/teeron/desktop/img1.jpg")
 player_classifier = 'players.xml'
 
 gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-player_tracker = cv2.CascadeClassifier(player_classifier)
-
+player_tracker = cv2.CascadeClassifier(cv2.data.haarcascades + 'players.xml')
 player = player_tracker.detectMultiScale(gray_img)
 
 print(player)
