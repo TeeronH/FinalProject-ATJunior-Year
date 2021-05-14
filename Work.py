@@ -1,58 +1,70 @@
 
+# All our imports
 import cv2
 import imutils
 from PIL import Image
 import numpy as np
 import os.path
+import random
+import sys
 
+# With this it doesn't require the user
+# to edit the pathways everytime (user friendly :) ) 
 homedir = os.path.expanduser("~")
 
+# Imports Haar cascades to recognize the faces
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-img = cv2.imread(homedir + '/FinalProject-ATJunior-Year/FACE.jpg')
+# Default image is the class
+if len(sys.argv) < 2:
+	imageGettingShreked = 'Class.jpg'
+
+# However, if you want to shrek your own
+# image you just add the name of the jpg
+# file as an argument. Make sure it is in
+# this directory though
+else:
+	IMAGEIMAGEIMAGE = sys.argv[1]
+	imageGettingShreked = IMAGEIMAGEIMAGE
+
+# Reads in the image and turns it to grayscale
+img = cv2.imread(homedir + '/FinalProject-ATJunior-Year/' + imageGettingShreked)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
+# Opens the image you imported that is layered upon later
+first_image = Image.open(homedir + '/FinalProject-ATJunior-Year/' + imageGettingShreked)
+
+# Identifies all the faces (not insanely accurate)
 faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+
+# Itterates over said faces
 for (x,y,w,h) in faces:
+
+	# Pretty redundant, but this is what would draw the bounding
+	# boxes. I'm just keeping it here for later when I use
+	# this as the base of my code for my summer project
 	img = cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
 	roi_gray = gray[y:y+h, x:x+w]
 	roi_color = img[y:y+h, x:x+w]
-	first_image = Image.open('/Users/teeron/FinalProject-ATJunior-Year/FACE.jpg')
-	second_image = Image.open('/Users/teeron/FinalProject-ATJunior-Year/Shrek1.jpg')
-	second_image.thumbnail((w, h))
+
+	# Just a random number generator to get one of three
+	# possible Shrek faces
+	ranNum = random.randint(1,3)
+
+	# Grabs corresponding image of Shrek
+	shrekImage = homedir + '/FinalProject-ATJunior-Year/Shrek' + str(ranNum) + '.jpg'
+
+	# Layers images here, and using .thumbnail crops it
+	# Weirdly the hardest part of the entire project, but
+	# maybe that's just indicitive of how easy of a project
+	# I chose
+	second_image = Image.open(shrekImage)
+	second_image.thumbnail((w*1.1, h*1.1))
 	first_image.paste(second_image, (x,y))
 
-   
-first_image.show()
+# Title for the image opened
+title = "Get Shreked"
 
-'''
-cv2.imshow('Git Shreked',img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-'''
+# Displays the image (title stuff doesn't really work)
+first_image.show(title='Get Shreked',command=None)
 
-
-'''
-imagePath = sys.argv[1]
-cascPath = "haarcascade_frontalface_default.xml"
-
-# Create the haar cascade
-faceCascade = cv2.CascadeClassifier(cascPath)
-
-# Read the image
-image = cv2.imread(imagePath)
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-# Detect faces in the image
-faces = faceCascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags = cv2.CASCADE_SCALE_IMAGE)
-
-print("Found {0} faces!".format(len(faces)))
-
-# Draw a rectangle around the faces
-for (x, y, w, h) in faces:
-	cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
-	shrekImage = (point(x,y), "Shrek1.png")
-
-cv2.imshow("Faces found", image)
-cv2.waitKey(0)
-'''
