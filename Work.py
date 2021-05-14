@@ -38,18 +38,18 @@ first_image = Image.open(homedir + '/FinalProject-ATJunior-Year/' + imageGetting
 faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 
 # Itterates over said faces
-for (x,y,w,h) in faces:
+for (x,y,width,height) in faces:
 
 	# Pretty redundant, but this is what would draw the bounding
 	# boxes. I'm just keeping it here for later when I use
 	# this as the base of my code for my summer project
-	img = cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
-	roi_gray = gray[y:y+h, x:x+w]
-	roi_color = img[y:y+h, x:x+w]
+	img = cv2.rectangle(img,(x,y),(x+width,y+height),(255,0,0),2)
+	roi_gray = gray[y:y+height, x:x+width]
+	roi_color = img[y:y+height, x:x+width]
 
 	# Just a random number generator to get one of three
 	# possible Shrek faces
-	ranNum = random.randint(1,3)
+	ranNum = random.randint(1,4)
 
 	# Grabs corresponding image of Shrek
 	shrekImage = homedir + '/FinalProject-ATJunior-Year/Shrek' + str(ranNum) + '.jpg'
@@ -59,7 +59,7 @@ for (x,y,w,h) in faces:
 	# maybe that's just indicitive of how easy of a project
 	# I chose
 	second_image = Image.open(shrekImage)
-	second_image.thumbnail((w*1.1, h*1.1))
+	second_image.thumbnail((width*1.1, height*1.1))
 	first_image.paste(second_image, (x,y))
 
 # Title for the image opened
